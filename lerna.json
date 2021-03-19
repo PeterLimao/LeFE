@@ -1,6 +1,6 @@
 {
   "name": "LeFE",
-  "npmClient": "yarn",
+  "npmClient": "npm",
   "useWorkspaces": true,
   "version": "independent",
   "command": {
@@ -14,5 +14,8 @@
       ],
       "message": "chore(release): publish"
     }
-  }
+  },
+  "packages": [
+    "packages/*"
+  ]
 }
