@@ -10,7 +10,7 @@ export type Props = Record<string, any>
 
 export type Condition = string | ((state: State, ...args: any[]) => boolean)
 
-export type LifeCycles = Record<EnumLifeCycle, () => void>
+export type LifeCycles = Partial<Record<EnumLifeCycle, () => void>>
 
 export type Render =
   | ((state: State, ...args: any[]) => string | number)
@@ -28,6 +28,6 @@ export type Block = {
 export type Config = {
   state: State
   methods: Methods
-  lifeCycles: LifeCycles
-  children: Block[]
+  lifeCycles?: LifeCycles
+  children?: Block[]
 }

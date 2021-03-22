@@ -12,13 +12,15 @@ ReactDOM.render(
   <Page
     config={{
       state: {
+        show: false,
         btn: {
-          name: 1
+          name: '显示设置'
         }
       },
       methods: {
-        handleClick() {
-          this.btn.name = this.btn.name + 1
+        setVisible() {
+          this.show = !this.show
+          this.btn.name = '123'
         }
       },
       lifeCycles: {
@@ -33,8 +35,13 @@ ReactDOM.render(
               componentName: 'lefe-button',
               render: '${btn.name}',
               events: {
-                click: 'handleClick'
+                click: 'setVisible'
               }
+            },
+            {
+              condition: 'show',
+              componentName: 'lefe-button',
+              render: '显示'
             }
           ]
         }

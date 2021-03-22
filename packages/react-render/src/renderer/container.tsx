@@ -1,41 +1,34 @@
 import { getCurrentInstance } from '../instance'
-import { isObject, nextTickScheduler, traverse } from '../helpers'
+import { nextTickScheduler, traverse } from '../helpers'
 import { useMounted, useUnMount } from '../hooks'
-import {
-  effect,
-  isReactive,
-  reactive,
-  ref,
-  toRaw,
-  unref
-} from '@vue/reactivity'
+import { effect, reactive, toRaw } from '@vue/reactivity'
 import React, { useRef, useState } from 'react'
 import { Config } from '../types'
 
 function initState(state: any, stateChangeCb: (state: any) => void) {
   const ctx = getCurrentInstance()
   const inited = useRef(false)
+  const reactiveStore = reactive(state)
 
   if (inited.current) return
 
   Object.keys(state).forEach((stateKey: string) => {
     if (!ctx[stateKey]) {
-      if (isObject(state[stateKey])) {
-        ctx[stateKey] = reactive(state[stateKey])
-      } else {
-        ctx[stateKey] = ref(state[stateKey])
-      }
+      Object.defineProperty(ctx, stateKey, {
+        get() {
+          return reactiveStore[stateKey]
+        },
+        set(newValue) {
+          reactiveStore[stateKey] = newValue
+        }
+      })
     }
   })
 
   effect(
     () => {
       const store = Object.keys(state).reduce((obj, key) => {
-        if (isReactive(ctx[key])) {
-          obj[key] = toRaw(traverse(ctx[key]))
-        } else {
-          obj[key] = unref(ctx[key])
-        }
+        obj[key] = toRaw(traverse(reactiveStore[key]))
         return obj
       }, {} as any)
 
@@ -75,7 +68,12 @@ function initLifeCycles(lifeCycles: any) {
   )
 }
 
-export const provideContext = React.createContext<Partial<Config>>({})
+export const provideContext = React.createContext<Config>({
+  state: {},
+  methods: {},
+  lifeCycles: {},
+  children: []
+})
 
 export function WithContainer(config: Config) {
   const { state, methods, lifeCycles } = config
