@@ -1,3 +1,5 @@
+import { ComponentClass, FC } from 'react'
+
 export type EnumLifeCycle = 'mounted' | 'beforeDestory'
 
 export type State = Record<string, any>
@@ -22,6 +24,7 @@ export type Block = {
   condition?: Condition
   props?: Props
   events?: Events
+  slot_LeFE?: string
   children?: Block[]
 }
 
@@ -30,4 +33,8 @@ export type Config = {
   methods: Methods
   lifeCycles?: LifeCycles
   children?: Block[]
+}
+
+export interface HyperBlock extends Block {
+  UIComponent: Record<string, FC<any> | ComponentClass<any, any>>
 }

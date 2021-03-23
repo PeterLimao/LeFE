@@ -8,7 +8,7 @@ interface PageProps {
 }
 
 const Page = ({ config }: PageProps) => {
-  const { children } = config
+  const { children = [] } = config
   const Wrapper = WithContainer(config)
 
   return (
