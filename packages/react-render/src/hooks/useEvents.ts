@@ -1,8 +1,8 @@
-import { getCurrentInstance } from '../instance'
+import { useInstance } from '../instance'
 import { Events } from '../types'
 
 export function useEvents(events: Events) {
-  const ctx = getCurrentInstance()
+  const ctx = useInstance()
 
   return {
     trigger: (event: keyof Events, ...args: any[]) => {

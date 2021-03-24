@@ -3,5 +3,6 @@ import { provideContext } from '../renderer'
 
 export function useStore() {
   const { state } = useContext(provideContext)
-  return state
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return state!
 }

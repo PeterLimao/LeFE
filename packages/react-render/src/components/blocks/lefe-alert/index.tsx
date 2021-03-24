@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
-import { HyperBlock } from '@/types'
-import { Render } from '@/renderer'
-import { useEvents } from '@/hooks'
-import BlockCom from '@/components/Block'
+import { HyperBlock } from '../../../types'
+import { Render } from '../../../renderer'
+import { useEvents } from '../../../hooks'
+import BlockCom from '../../../components/Block'
 
 const LefeAlert = ({ UIComponent, events, children, props }: HyperBlock) => {
   const { Alert } = UIComponent
@@ -19,9 +19,9 @@ const LefeAlert = ({ UIComponent, events, children, props }: HyperBlock) => {
   return (
     <Alert
       closable={true}
-      {...props}
       onClick={() => trigger('close')}
       message={renderChildren()}
+      {...props}
     />
   )
 }

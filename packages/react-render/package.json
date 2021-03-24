@@ -6,9 +6,7 @@
     "build": "tsc --build ./tsconfig.json && vite build",
     "serve": "vite preview"
   },
-  "main": "dist/react-render.umd.js",
-  "module": "dist/react-render.es.js",
-  "typings": "./types",
+  "main": "src/index.ts",
   "keywords": [
     "react",
     "reactComponent",

@@ -3,10 +3,14 @@ import { nextTickScheduler, traverse } from '../helpers'
 import { useMounted, useUnMount } from '../hooks'
 import { effect, reactive, toRaw } from '@vue/reactivity'
 import React, { useRef, useState } from 'react'
-import { Config } from '../types'
+import { Config, LifeCycles, Methods, State } from '../types'
+import LeFE from '@lefe-1/api'
 
-function initState(state: any, stateChangeCb: (state: any) => void) {
-  const ctx = getCurrentInstance()
+function initState(
+  state: State,
+  ctx: any,
+  stateChangeCb: (state: State) => void
+) {
   const inited = useRef(false)
   const reactiveStore = reactive(state)
 
@@ -41,27 +45,22 @@ function initState(state: any, stateChangeCb: (state: any) => void) {
   inited.current = true
 }
 
-function initMethods(methods: any) {
-  const ctx = getCurrentInstance()
+function initMethods(methods: Methods, ctx: any) {
   const inited = useRef(false)
 
   if (inited.current) return
 
   Object.keys(methods).forEach(key => {
-    if (ctx[key]) {
-      console.error(`[Lefe] 上下文中已经存在相同的${key}`)
-    }
-
-    ctx[key] = (...args: any[]) => {
-      methods[key].apply(ctx, args)
+    if (!ctx[key]) {
+      ctx[key] = (...args: any[]) => {
+        methods[key].apply(ctx, args)
+      }
     }
   })
   inited.current = true
 }
 
-function initLifeCycles(lifeCycles: any) {
-  const ctx = getCurrentInstance()
-
+function initLifeCycles(lifeCycles: LifeCycles, ctx: any) {
   useMounted(lifeCycles.mounted ? lifeCycles.mounted.bind(ctx) : () => {})
   useUnMount(
     lifeCycles.beforeDestory ? lifeCycles.beforeDestory.bind(ctx) : () => {}
@@ -77,13 +76,19 @@ export const provideContext = React.createContext<Config>({
 
 export function WithContainer(config: Config) {
   const { state, methods, lifeCycles } = config
-  const [store, setStore] = useState(state)
+  const [store, setStore] = useState<State>(() => {
+    return {
+      ...(state || {}),
+      LeFE_ID: LeFE.md5(JSON.stringify(state || {}))
+    }
+  })
+  const ctx = getCurrentInstance(store.LeFE_ID)
 
-  initState(state, newState => {
+  initState(state || {}, ctx, newState => {
     setStore(newState)
   })
-  initMethods(methods)
-  initLifeCycles(lifeCycles)
+  initMethods(methods || {}, ctx)
+  initLifeCycles(lifeCycles || {}, ctx)
 
   return ({ children }: any) => {
     return (

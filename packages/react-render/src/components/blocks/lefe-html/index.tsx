@@ -1,8 +1,8 @@
 import React from 'react'
-import { useEvents, useStore } from '@/hooks'
+import { useEvents, useStore } from '../../../hooks'
 import LeFE from '@lefe-1/api'
-import { Render } from '@/renderer'
-import { Block } from '@/types'
+import { Render } from '../../../renderer'
+import { Block } from '../../../types'
 
 interface HtmlProps extends Block {
   UIComponent: any

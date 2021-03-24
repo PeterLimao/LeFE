@@ -20,6 +20,7 @@ export type Render =
 
 export type Block = {
   componentName: string
+  state?: string
   render?: Render
   condition?: Condition
   props?: Props
@@ -29,8 +30,8 @@ export type Block = {
 }
 
 export type Config = {
-  state: State
-  methods: Methods
+  state?: State
+  methods?: Methods
   lifeCycles?: LifeCycles
   children?: Block[]
 }
