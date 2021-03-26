@@ -3,8 +3,6 @@ export default {
   methods: {
     close() {
       console.log('..1')
-
-      window.alert('close')
     }
   },
   children: [

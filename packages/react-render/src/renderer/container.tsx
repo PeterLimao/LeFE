@@ -53,7 +53,7 @@ function initMethods(methods: Methods, ctx: any) {
   Object.keys(methods).forEach(key => {
     if (!ctx[key]) {
       ctx[key] = (...args: any[]) => {
-        methods[key].apply(ctx, args)
+        return methods[key].apply(ctx, args)
       }
     }
   })
@@ -76,21 +76,22 @@ export const provideContext = React.createContext<Config>({
 
 export function WithContainer(config: Config) {
   const { state, methods, lifeCycles } = config
-  const [store, setStore] = useState<State>(() => {
-    return {
-      ...(state || {}),
-      LeFE_ID: LeFE.md5(JSON.stringify(state || {}))
-    }
-  })
-  const ctx = getCurrentInstance(store.LeFE_ID)
-
-  initState(state || {}, ctx, newState => {
-    setStore(newState)
-  })
-  initMethods(methods || {}, ctx)
-  initLifeCycles(lifeCycles || {}, ctx)
 
   return ({ children }: any) => {
+    const [store, setStore] = useState<State>(() => {
+      return {
+        ...(state || {}),
+        LeFE_ID: LeFE.md5(JSON.stringify(state || {}))
+      }
+    })
+    const ctx = getCurrentInstance(store.LeFE_ID)
+
+    initState(state || {}, ctx, newState => {
+      setStore({ ...store, ...newState })
+    })
+    initMethods(methods || {}, ctx)
+    initLifeCycles(lifeCycles || {}, ctx)
+
     return (
       <provideContext.Provider value={{ state: store, methods }}>
         {children}

@@ -12,6 +12,7 @@ function registAntD(uiComponents: any) {
   registUIComponent('lefe-alert', { Alert: uiComponents.Alert })
   registUIComponent('lefe-badge', { Badge: uiComponents.Badge })
   registUIComponent('lefe-tag', { Tag: uiComponents.Tag })
+  registUIComponent('lefe-input', { Input: uiComponents.Input })
 }
 
 function setup({ uiComponents }: SetupConfig) {

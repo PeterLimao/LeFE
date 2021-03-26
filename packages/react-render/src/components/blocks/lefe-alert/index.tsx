@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { HyperBlock } from '../../../types'
 import { Render } from '../../../renderer'
 import { useEvents } from '../../../hooks'
-import BlockCom from '../../../components/Block'
+import BlockCom from '../../Block'
 
 const LefeAlert = ({ UIComponent, events, children, props }: HyperBlock) => {
   const { Alert } = UIComponent

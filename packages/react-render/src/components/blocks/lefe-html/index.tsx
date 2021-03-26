@@ -2,13 +2,9 @@ import React from 'react'
 import { useEvents, useStore } from '../../../hooks'
 import LeFE from '@lefe-1/api'
 import { Render } from '../../../renderer'
-import { Block } from '../../../types'
+import { HyperBlock } from '../../../types'
 
-interface HtmlProps extends Block {
-  UIComponent: any
-}
-
-const LefeHtml = ({ props, events, render }: HtmlProps) => {
+const LefeHtml = ({ props, events, render }: HyperBlock) => {
   const { trigger } = useEvents(events || {})
   const state = useStore()
 

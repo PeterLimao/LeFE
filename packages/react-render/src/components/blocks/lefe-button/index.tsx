@@ -7,13 +7,13 @@ import { useStore, useEvents } from '../../../hooks'
 const LefeButton = ({ UIComponent, props, render, events }: HyperBlock) => {
   const { Button } = UIComponent
   const store = useStore()
-  const { trigger } = useEvents(events || {})
+  const { trigger, eventLoading } = useEvents(events || {})
 
   return (
-    <Button {...props} onClick={() => trigger('click')}>
-      <div
+    <Button {...props} onClick={() => trigger('click')} loading={eventLoading}>
+      <span
         dangerouslySetInnerHTML={{ __html: LeFE.render(render, store) }}
-      ></div>
+      ></span>
     </Button>
   )
 }

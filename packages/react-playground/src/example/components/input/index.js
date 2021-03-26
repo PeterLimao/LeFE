@@ -1,6 +1,14 @@
 export default {
   state: {
-    value: '1'
+    value: 1
+  },
+  methods: {
+    onBlur() {
+      console.log('....blur')
+    },
+    onFocus() {
+      console.log('....focus')
+    }
   },
   children: [
     {
@@ -9,7 +17,11 @@ export default {
     },
     {
       componentName: 'lefe-input',
-      state: 'value'
+      state: 'value',
+      events: {
+        blur: 'onBlur',
+        focus: 'onFocus'
+      }
     }
   ]
 }
